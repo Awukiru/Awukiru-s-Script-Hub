@@ -1,6 +1,6 @@
 --// Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jonatanortiz2/Jon-s-Ui-Library/main/Source.lua"))();
-local Window = Library:CreateWindow("Enjoy <3", true);
+local Window = Library:CreateWindow("Love You <3", true);
 local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
@@ -72,9 +72,9 @@ local Closest_NPC = function()
     local Closest = nil;
     local Distance = 9e9;
     
-    for i, v in next, Npcs:GetDescendants() do
-        if v:IsA("Part") and v.Name == "HumanoidRootPart" then
-            local Magnitude = (HumanoidRootPart.Position - v.Position).Magnitude;
+    for i, v in next, Npcs:GetChildren() do
+        if v:IsA("Model") then
+            local Magnitude = (HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude;
 
             if Magnitude < Distance then
                 Closest = v;
@@ -188,7 +188,40 @@ Settings:CreateButton("Load Selected Config", function()
 end)
 
 --// The Main Stuff Ye
-RunService.Heartbeat:Connect(function()
+task.spawn(function()
+    local Connection;
+    local Force;
+    local function GetMass(Model)
+        for i,v in next, Model:GetDescendants() do
+            if v:IsA("BasePart") then
+                return tonumber(v:GetMass());
+            end
+        end
+    end
+    local function Float(Character)
+        if Connection then
+            Connection:Disconnect();
+            Connection = nil;
+        end
+        if not Force then
+            Force = Instance.new("BodyForce");
+        end
+        local Root = Character:WaitForChild("HumanoidRootPart");
+        Force.Parent = Root;
+        Connection = game:GetService("RunService").Stepped:Connect(function()
+            if getgenv().AutoKillNPC == true then
+                Root.Velocity = Vector3.new(Root.Velocity.X, 0, Root.Velocity.Z);
+                Force.Force = Vector3.new(0, GetMass(Character) * workspace.Gravity, 0);
+            else
+                Force.Force = Vector3.zero;
+            end
+        end)
+    end
+    if Character then Float(Character) end
+    LocalPlayer.CharacterAdded:Connect(Float);
+end)
+
+RunService.Stepped:Connect(function()
     local LocalPlayer = game:GetService("Players").LocalPlayer;
     local HumanoidRootPart = LocalPlayer.Character.HumanoidRootPart;
     --// Auto Power
@@ -198,8 +231,8 @@ RunService.Heartbeat:Connect(function()
     --// Auto Kill NPC's
     if getgenv().AutoKillNPC == true then
         if Closest_NPC() ~= nil then
-            HumanoidRootPart.CFrame = Closest_NPC().Parent.HumanoidRootPart.CFrame * CFrame.new(0, 0, 0);
-            ClickRemotes.Click:InvokeServer(Closest_NPC().Parent.Name);
+            HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 10, 0);
+            ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
         end
     end
     --// Auto Equip Best Pet + Sword
