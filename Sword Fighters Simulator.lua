@@ -101,6 +101,7 @@ getgenv().AutoKillNPC = false;
 getgenv().AutoBestBoth = false;
 getgenv().AutoBestPet = false;
 getgenv().AutoBestSword = false;
+getgenv().AreaToTpTo = "";
 getgenv().AutoHatch = false;
 getgenv().SelectedEgg = "";
 getgenv().AutoDeleteSword = false;
@@ -136,8 +137,12 @@ local BestSword = Equip:CreateToggle("Auto Equip Best (Sword)", getgenv().AutoBe
     getgenv().AutoBestSword = Value;
 end)
 
-local AreaTeleports = Teleport:CreateDropdown("Teleport To Selected Area", {"Spawn", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
-    LocalPlayer.Character.HumanoidRootPart.CFrame = Game_Areas[Value];
+local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Spawn", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
+    getgenv().AreaToTpTo = Game_Areas[Value];
+end)
+
+Teleport:CreateButton("Teleport", function()
+    LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().AreaToTpTo
 end)
 
 local Egg_Hatcher = Eggs:CreateToggle("Auto Hatch Selected Egg", getgenv().AutoHatch, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
