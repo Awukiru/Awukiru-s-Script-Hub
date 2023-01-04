@@ -234,7 +234,7 @@ RunService.Stepped:Connect(function()
     end
     --// Auto Kill NPC's
     if getgenv().AutoKillNPC == true then
-        LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 10, 0);
+        LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
         ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
     end
     --// Auto Equip Best Pet + Sword
