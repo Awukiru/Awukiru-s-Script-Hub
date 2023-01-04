@@ -227,8 +227,6 @@ task.spawn(function()
 end)
 
 RunService.Stepped:Connect(function()
-    local LocalPlayer = game:GetService("Players").LocalPlayer;
-    local HumanoidRootPart = LocalPlayer.Character.HumanoidRootPart;
     --// Auto Power
     if getgenv().AutoPower == true then
         ClickRemotes.Click:InvokeServer();
@@ -236,7 +234,7 @@ RunService.Stepped:Connect(function()
     --// Auto Kill NPC's
     if getgenv().AutoKillNPC == true then
         if Closest_NPC() ~= nil then
-            HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 10, 0);
+            LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
             ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
         end
     end
@@ -308,7 +306,7 @@ RunService.Stepped:Connect(function()
             until
                 Pickups:GetChildren()[1];
         end
-        Pickups:GetChildren()[1].Position = HumanoidRootPart.Position;
+        Pickups:GetChildren()[1].Position = LocalPlayer.Character.HumanoidRootPart.Position;
     end
     --// Auto Ascend
     if getgenv().AutoAscend == true then
