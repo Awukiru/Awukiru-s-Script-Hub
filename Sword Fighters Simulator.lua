@@ -74,8 +74,7 @@ local Closest_NPC = function()
     
     for i, v in next, Npcs:GetChildren() do
         if v:IsA("Model") then
-            local NPC = v.HumanoidRootPart
-            local Magnitude = (HumanoidRootPart.Position - NPC.Position).Magnitude;
+            local Magnitude = (HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude;
 
             if Magnitude < Distance then
                 Closest = v;
@@ -88,11 +87,11 @@ local Closest_NPC = function()
 end
 
 local Has_Triple_Hatch = function(UserId, GamepassId)
-    local Check, Owns = pcall(MarketplaceService.UserOwnsGamePassAsync, MarketplaceService, UserId, GamepassId)
+    local Check, Owns = pcall(MarketplaceService.UserOwnsGamePassAsync, MarketplaceService, UserId, GamepassId);
     if not Check then
-        Owns = false
+        Owns = false;
     end
-    return Owns
+    return Owns;
 end
 
 --// Toggles
@@ -143,7 +142,7 @@ local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"
 end)
 
 Teleport:CreateButton("Teleport", function()
-    LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().AreaToTpTo
+    LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().AreaToTpTo;
 end)
 
 local Egg_Hatcher = Eggs:CreateToggle("Auto Hatch Selected Egg", getgenv().AutoHatch, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
@@ -228,14 +227,18 @@ task.spawn(function()
 end)
 
 RunService.Stepped:Connect(function()
+    local LocalPlayer = game:GetService("Players").LocalPlayer;
+    local HumanoidRootPart = LocalPlayer.Character.HumanoidRootPart;
     --// Auto Power
     if getgenv().AutoPower == true then
         ClickRemotes.Click:InvokeServer();
     end
     --// Auto Kill NPC's
     if getgenv().AutoKillNPC == true then
-        LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
-        ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
+        if Closest_NPC() ~= nil then
+            HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 10, 0);
+            ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
+        end
     end
     --// Auto Equip Best Pet + Sword
     if getgenv().AutoBestBoth == true then
@@ -253,9 +256,9 @@ RunService.Stepped:Connect(function()
     --// Auto Hatch Egg
     if getgenv().AutoHatch == true then
         if Has_Triple_Hatch(LocalPlayer.UserId, 93513159) == true then
-            EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = 3})
+            EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = 3});
         else
-            EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = 1})
+            EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = 1});
         end
     end
     --// Auto Delete Sword + Pet
@@ -294,7 +297,7 @@ RunService.Stepped:Connect(function()
         end
         if PetFound == true then
             PetRemotes.MultiDelete:InvokeServer(Pets);
-            PetFound = false
+            PetFound = false;
         end
     end
     --// Auto Coin Pickup
@@ -305,7 +308,7 @@ RunService.Stepped:Connect(function()
             until
                 Pickups:GetChildren()[1];
         end
-        Pickups:GetChildren()[1].Position = LocalPlayer.Character.HumanoidRootPart.Position;
+        Pickups:GetChildren()[1].Position = HumanoidRootPart.Position;
     end
     --// Auto Ascend
     if getgenv().AutoAscend == true then
