@@ -57,7 +57,7 @@ local Egg_Table = {
     ["Aquatic Egg"] = "Egg 21",
 }
 local Game_Areas = {
-    ["Spawn"] = CFrame.new(326, 150, -0),
+    ["Dark Forest"] = CFrame.new(326, 150, -0),
     ["Skull Cove"] = CFrame.new(2234, 149, -573),
     ["Demon Hill"] = CFrame.new(3948, 150, -384),
     ["Polar Tundra"] = CFrame.new(5965, 150, -538),
@@ -241,7 +241,7 @@ local BestSword = Equip:CreateToggle("Auto Equip Best (Sword)", getgenv().AutoBe
     getgenv().AutoBestSword = Value;
 end)
 
-local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Spawn", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
+local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
     getgenv().AreaToTpTo = Game_Areas[Value];
 end)
 
