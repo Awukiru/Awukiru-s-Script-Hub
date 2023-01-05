@@ -148,7 +148,6 @@ if game.PlaceId == 11040063484 then
                 end
             end
         end
-    
         return Closest;
     end
     
@@ -170,7 +169,6 @@ if game.PlaceId == 11040063484 then
                 end
             end
         end
-    
         return Closest;
     end
     
@@ -347,137 +345,99 @@ if game.PlaceId == 11040063484 then
         if Character then Float(Character) end
         LocalPlayer.CharacterAdded:Connect(Float);
     end)
-
+    
     RunService.Stepped:Connect(function()
         --// Auto Power
-        task.spawn(function()
-            if getgenv().AutoPower == true then
-                ClickRemotes.Click:InvokeServer();
-                return;
+        if getgenv().AutoPower == true then
+            ClickRemotes.Click:InvokeServer();
+        end
+    --// Teleport To NPC's
+        if getgenv().AutoKillNPC == true then
+            if Closest_NPC() ~= nil then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
+                ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
             end
-        end)
-        --// Auto Kill NPC's
-        task.spawn(function()
-            if getgenv().AutoKillNPC == true then
-                if Closest_NPC() ~= nil then
-                    LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
-                    ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
-                    game:GetService("RunService").RenderStepped:wait()
-                    return;
-                end
+        end
+    --// Teleport To Specific NPC
+        if getgenv().AutoKillSpecificNPC == true then
+            if Get_Specific_Closest() ~= nil then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
+                ClickRemotes.Click:InvokeServer(Get_Specific_Closest().Name);
             end
-        end)
-        --// Auto Kill Specific NPC
-        task.spawn(function()
-            if getgenv().AutoKillSpecificNPC == true then
-                if Get_Specific_Closest() ~= nil then
-                    LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
-                    ClickRemotes.Click:InvokeServer(Get_Specific_Closest().Name);
-                    game:GetService("RunService").RenderStepped:wait()
-                    return;
-                end
-            end
-        end)
+        end
         --// Auto Equip Best Pet + Sword
-        task.spawn(function()
-            if getgenv().AutoBestBoth == true then
-                PetRemotes.EquipBest:InvokeServer();
-                SwordRemotes.EquipBest:InvokeServer();
-                return;
-            end
-        end)
+        if getgenv().AutoBestBoth == true then
+            PetRemotes.EquipBest:InvokeServer();
+            SwordRemotes.EquipBest:InvokeServer();
+        end
         --// Auto Equip Best Pet
-        task.spawn(function()
-            if getgenv().AutoBestPet == true then
-                PetRemotes.EquipBest:InvokeServer();
-                return;
-            end
-        end)
+        if getgenv().AutoBestPet == true then
+            PetRemotes.EquipBest:InvokeServer();
+        end
         --// Auto Equip Best Sword
-        task.spawn(function()
-            if getgenv().AutoBestSword == true then
-                SwordRemotes.EquipBest:InvokeServer();
-                return;
-            end
-        end)
+        if getgenv().AutoBestSword == true then
+            SwordRemotes.EquipBest:InvokeServer();
+        end
         --// Auto Hatch Egg
-        task.spawn(function()
-            if getgenv().AutoHatch == true then
-                EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = getgenv().HatchAmount});
-                return;
-            end
-        end)
+        if getgenv().AutoHatch == true then
+            EggRemotes.BuyEgg:InvokeServer({["eggName"] = getgenv().SelectedEgg, ["auto"] = false, ["amount"] = getgenv().HatchAmount});
+        end
         --// Auto Delete Sword + Pet
-        task.spawn(function()
-            if getgenv().AutoDeleteSword == true then
-                local SwordFound = false;
-                local Swords = {};
-        
-                for i, v in next, WeaponInv:GetDescendants() do
-                    if v:IsA("Frame") and v.Name == "Equipped" then
-                        if v.Visible == false then
-                            if v then
-                                SwordFound = true;
-                                Swords[tostring(v.Parent.Parent.Name)] = true;
-                            end
+        if getgenv().AutoDeleteSword == true then
+            local SwordFound = false;
+            local Swords = {};
+    
+            for i, v in next, WeaponInv:GetDescendants() do
+                if v:IsA("Frame") and v.Name == "Equipped" then
+                    if v.Visible == false then
+                        if v then
+                            SwordFound = true;
+                            Swords[tostring(v.Parent.Parent.Name)] = true;
                         end
                     end
                 end
-                if SwordFound == true then
-                    SwordRemotes.MultiSell:InvokeServer(Swords);
-                    SwordFound = false;
-                end
-                return;
             end
-        end)
-        task.spawn(function()
-            if getgenv().AutoDeletePet == true then
-                local PetFound = false;
-                local Pets = {};
-        
-                for i, v in next, PetInv:GetDescendants() do
-                    if v:IsA("Frame") and v.Name == "Equipped" then
-                        if v.Visible == false then
-                            if v then
-                                PetFound = true;
-                                Pets[tostring(v.Parent.Parent.Name)] = true;
-                            end
+            if SwordFound == true then
+                SwordRemotes.MultiSell:InvokeServer(Swords);
+                SwordFound = false;
+            end
+        end
+        if getgenv().AutoDeletePet == true then
+            local PetFound = false;
+            local Pets = {};
+    
+            for i, v in next, PetInv:GetDescendants() do
+                if v:IsA("Frame") and v.Name == "Equipped" then
+                    if v.Visible == false then
+                        if v then
+                            PetFound = true;
+                            Pets[tostring(v.Parent.Parent.Name)] = true;
                         end
                     end
                 end
-                if PetFound == true then
-                    PetRemotes.MultiDelete:InvokeServer(Pets);
-                    PetFound = false;
-                end
-                return;
             end
-        end)
+            if PetFound == true then
+                PetRemotes.MultiDelete:InvokeServer(Pets);
+                PetFound = false;
+            end
+        end
         --// Walk Speed + Jump Power
-        task.spawn(function()
-            Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
-        end)
+        Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
         --// Auto Pickup Coins
-        task.spawn(function()
-            if getgenv().AutoCoins == true then
-                if not Pickups:GetChildren()[1] then
-                    repeat
-                        task.wait();
-                    until
-                        Pickups:GetChildren()[1];
-                end
-                Pickups:GetChildren()[1].CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame;
-                return
+        if getgenv().AutoCoins == true then
+            if not Pickups:GetChildren()[1] then
+                repeat
+                    task.wait();
+                until Pickups:GetChildren()[1];
             end
-        end)
+            Pickups:GetChildren()[1].CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame;
+        end
         --// Auto Ascend
-        task.spawn(function()
-            if getgenv().AutoAscend == true then
-                if Ascend_Needed.AbsoluteSize == Ascend_Current.AbsoluteSize then
-                    AscendRemotes.Ascend:InvokeServer();
-                    return;
-                end
+        if getgenv().AutoAscend == true then
+            if Ascend_Needed.AbsoluteSize == Ascend_Current.AbsoluteSize then
+                AscendRemotes.Ascend:InvokeServer();
             end
-        end)
+        end
     end)
     
     while task.wait(.05) do
