@@ -9,6 +9,7 @@ local SellTab = Window:CreateTab("Sell/Delete", false, "rbxassetid://4483362458"
 local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local MiscTab = Window:CreateTab("Misc", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local SettingsTab = Window:CreateTab("Settings", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+local UIToggleTab = Window:CreateTab("UI Toggle", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local Main = MainTab:CreateSection("Main");
 local Equip = EquipTab:CreateSection("Equip");
 local Teleport = TeleportTab:CreateSection("Teleports");
@@ -17,6 +18,7 @@ local Sell = SellTab:CreateSection("Sell/Delete");
 local Player = PlayerTab:CreateSection("Player");
 local Misc = MiscTab:CreateSection("Misc");
 local Settings = SettingsTab:CreateSection("Settings");
+local UIToggle = UIToggleTab:CreateSection("UI Toggle");
 
 --// Variables
 local Players = game:GetService("Players");
@@ -302,6 +304,10 @@ end)
 
 Settings:CreateButton("Load Selected Config", function()
     Library:LoadConfig(getgenv().CreatedConfigName);
+end)
+
+local LibraryToggle = UIToggle:CreateKeybind("Keybind", "E", function()
+    Library:ToggleUI()
 end)
 
 --// The Main Stuff Ye
