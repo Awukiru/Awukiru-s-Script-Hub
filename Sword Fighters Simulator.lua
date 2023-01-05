@@ -6,6 +6,7 @@ local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vec
 local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local SellTab = Window:CreateTab("Sell/Delete", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local MiscTab = Window:CreateTab("Misc", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local SettingsTab = Window:CreateTab("Settings", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
 local Main = MainTab:CreateSection("Main");
@@ -13,6 +14,7 @@ local Equip = EquipTab:CreateSection("Equip");
 local Teleport = TeleportTab:CreateSection("Teleports");
 local Eggs = EggsTab:CreateSection("Eggs");
 local Sell = SellTab:CreateSection("Sell/Delete");
+local Player = PlayerTab:CreateSection("Player");
 local Misc = MiscTab:CreateSection("Misc");
 local Settings = SettingsTab:CreateSection("Settings");
 
@@ -26,6 +28,7 @@ local MarketplaceService = game:GetService("MarketplaceService");
 local Workspace = game:GetService("Workspace");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local RunService = game:GetService("RunService");
+local UserInputService = game:GetService("UserInputService");
 local ClickRemotes = ReplicatedStorage.Packages.Knit.Services.ClickService.RF;
 local AscendRemotes = ReplicatedStorage.Packages.Knit.Services.AscendService.RF;
 local PetRemotes = ReplicatedStorage.Packages.Knit.Services.PetInvService.RF;
@@ -152,7 +155,7 @@ local Get_Specific_Closest = function()
     
     for a, b in next, Npcs:GetChildren() do
         if b:IsA("Model") then
-            local Npc_Name = b.HumanoidRootPart.NPCTag.NameLabel.Text
+            local Npc_Name = b.HumanoidRootPart.NPCTag.NameLabel.Text;
             for c, d in next, Game_Npcs do
                 if string.match(d, Npc_Name) == getgenv().NpcToFarm then
                     local Magnitude = (HumanoidRootPart.Position - b.HumanoidRootPart.Position).Magnitude;
@@ -182,7 +185,7 @@ getgenv().AutoPower = false;
 getgenv().AutoKillNPC = false;
 getgenv().SpecificNPCEfficiency = false;
 getgenv().AutoKillSpecificNPC = false;
-getgenv().NpcToFarm = ""
+getgenv().NpcToFarm = "";
 getgenv().AutoBestBoth = false;
 getgenv().AutoBestPet = false;
 getgenv().AutoBestSword = false;
@@ -191,6 +194,8 @@ getgenv().AutoHatch = false;
 getgenv().SelectedEgg = "";
 getgenv().AutoDeleteSword = false;
 getgenv().AutoDeletePet = false;
+getgenv().WalkSpeed = nil;
+getgenv().InfiniteJump = false;
 getgenv().AutoCoins = false;
 getgenv().AutoAscend = false;
 getgenv().RandomConfigNumber = math.random(1e5, 9e5);
@@ -260,6 +265,14 @@ local PetDelete = Sell:CreateToggle("Auto Sell/Delete Unequiped Pets", getgenv()
     getgenv().AutoDeletePet = Value;
 end)
 
+local WalkSpeed = Player:CreateSlider("Walk Speed", 1, 500, Character.Humanoid.WalkSpeed, false, Color3.fromRGB(0, 146, 214), function(Value)
+    getgenv().WalkSpeed = Value;
+end)
+
+local InfiniteJump = Player:CreateToggle("Infinite Jump", getgenv().InfiniteJump, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    getgenv().InfiniteJump = Value;
+end)
+
 local Coins = Misc:CreateToggle("Auto Coin Pickup", getgenv().AutoCoins, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
     getgenv().AutoCoins = Value;
 end)
@@ -292,6 +305,12 @@ Settings:CreateButton("Load Selected Config", function()
 end)
 
 --// The Main Stuff Ye
+game:GetService("UserInputService").JumpRequest:connect(function()
+    if getgenv().InfiniteJump == true then
+        Character.Humanoid:ChangeState("Jumping")
+    end
+end)
+
 task.spawn(function()
     local Connection;
     local Force;
@@ -404,6 +423,8 @@ RunService.Stepped:Connect(function()
             PetFound = false;
         end
     end
+    --// Walk Speed + Jump Power
+    Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
     --// Auto Coin Pickup
     if getgenv().AutoCoins == true then
         if not Pickups:GetChildren()[1] then
