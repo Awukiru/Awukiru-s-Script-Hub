@@ -1,7 +1,7 @@
 if game.PlaceId == 11040063484 then
     --// Library
     local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jonatanortiz2/Jon-s-Ui-Library/main/Source.lua"))();
-    local Window = Library:CreateWindow("Love You <3", true);
+    local Window = Library:CreateWindow("By Awukiru", true);
     local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
