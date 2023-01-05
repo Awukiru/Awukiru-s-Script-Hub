@@ -66,6 +66,66 @@ local Game_Areas = {
     ["Sacred Land"] = CFrame.new(9397, 150, -4349),
     ["Marine Castle"] = CFrame.new(13202, 167, -3421),
 }
+local Game_Npcs = {
+    "Dark Commander",
+    "Adurite Warden",
+    "King Pharaoh",
+    "Orc",
+    "Skeleton",
+    "Necromancer",
+    "Blood Zombie",
+    "Skye Knight",
+    "Blood Knight",
+    "Mummy",
+    "Monk",
+    "Imp",
+    "Pirate Thief",
+    "Purple Dragon",
+    "Ninja",
+    "Santa Claus",
+    "Ice King",
+    "Penguin",
+    "Pirate Admiral",
+    "Warlock",
+    "Guardian",
+    "Desert Beast",
+    "Spirit Lord",
+    "Red Devil",
+    "Marine",
+    "Mutant Insect",
+    "Paladin",
+    "Samurai Master",
+    "The Grinch",
+    "Angel",
+    "Blood Vampire",
+    "Oni",
+    "Cyclops",
+    "Snow Warrior",
+    "Zombie Miner",
+    "Demon",
+    "Yeti",
+    "Pirate Captain",
+    "Power Force",
+    "Samurai",
+    "Royal Warrior",
+    "Lost Soul",
+    "Lava Golem",
+    "Green Insect",
+    "Mushy",
+    "Brown Insect",
+    "Malevolent Spirit",
+    "Dark Knight",
+    "Satyr",
+    "Master Wizard",
+    "Golem",
+    "Zeus the God",
+    "Lost Titan",
+    "Elf",
+    "Barbarian Pirate",
+    "Treasure Chest",
+    "Madman",
+    "Goblin",
+}
 
 --// Functions
 local Closest_NPC = function()
@@ -86,6 +146,28 @@ local Closest_NPC = function()
     return Closest;
 end
 
+local Get_Specific_Closest = function()
+    local Closest = nil;
+    local Distance = 9e9;
+    
+    for a, b in next, Npcs:GetChildren() do
+        if b:IsA("Model") then
+            local Npc_Name = b.HumanoidRootPart.NPCTag.NameLabel.Text
+            for c, d in next, Game_Npcs do
+                if string.match(d, Npc_Name) == getgenv().NpcToFarm then
+                    local Magnitude = (HumanoidRootPart.Position - b.HumanoidRootPart.Position).Magnitude;
+                    if Magnitude < Distance then
+                        Closest = b;
+                        Distance = Magnitude;
+                    end
+                end
+            end
+        end
+    end
+
+    return Closest;
+end
+
 local Has_Triple_Hatch = function(UserId, GamepassId)
     local Check, Owns = pcall(MarketplaceService.UserOwnsGamePassAsync, MarketplaceService, UserId, GamepassId);
     if not Check then
@@ -98,6 +180,9 @@ end
 getgenv().Efficiency = false;
 getgenv().AutoPower = false;
 getgenv().AutoKillNPC = false;
+getgenv().SpecificNPCEfficiency = false;
+getgenv().AutoKillSpecificNPC = false;
+getgenv().NpcToFarm = ""
 getgenv().AutoBestBoth = false;
 getgenv().AutoBestPet = false;
 getgenv().AutoBestSword = false;
@@ -113,7 +198,7 @@ getgenv().CreatedConfigName = "";
 getgenv().NewConfigName = "Config-" .. getgenv().RandomConfigNumber;
 
 --// The Ui Lib Stuff Ye
-local Efficiency = Main:CreateToggle("Autofarm Efficiency Mode", getgenv().Efficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+local Efficiency = Main:CreateToggle("Autofarm Efficiency Mode (All NPC's)", getgenv().Efficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
     getgenv().Efficiency = Value;
 end)
 
@@ -123,6 +208,20 @@ end)
 
 local Kill = Main:CreateToggle("Auto Kill Closest NPC's", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
     getgenv().AutoKillNPC = Value;
+end)
+
+local Label = Main:CreateLabel("Specific NPC's")
+
+local SpecificEfficiency = Main:CreateToggle("Autofarm Efficiency Mode (Specific NPC's)", getgenv().SpecificNPCEfficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    getgenv().SpecificNPCEfficiency = Value;
+end)
+
+local SelectSpecific = Main:CreateDropdown("Chose NPC Tp Auto Kill", Game_Npcs, nil, 0.25, function(Value)
+    getgenv().NpcToFarm = Value;
+end)
+
+local KillSpecific = Main:CreateToggle("Auto Kill Chosen NPC", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    getgenv().AutoKillSpecificNPC = Value;
 end)
 
 local BestBoth = Equip:CreateToggle("Auto Equip Best (Sword + Pet)", getgenv().AutoBestBoth, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
@@ -214,7 +313,7 @@ task.spawn(function()
         local Root = Character:WaitForChild("HumanoidRootPart");
         Force.Parent = Root;
         Connection = game:GetService("RunService").Stepped:Connect(function()
-            if getgenv().AutoKillNPC == true then
+            if (getgenv().AutoKillNPC == true or getgenv().AutoKillSpecificNPC == true) then
                 Root.Velocity = Vector3.new(Root.Velocity.X, 0, Root.Velocity.Z);
                 Force.Force = Vector3.new(0, GetMass(Character) * workspace.Gravity, 0);
             else
@@ -236,6 +335,13 @@ RunService.Stepped:Connect(function()
         if Closest_NPC() ~= nil then
             LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
             ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
+        end
+    end
+    --// Auto Kill Specific NPC
+    if getgenv().AutoKillSpecificNPC == true then
+        if Get_Specific_Closest() ~= nil then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().HumanoidRootPart.CFrame * CFrame.new(0, 0, -2.5);
+            ClickRemotes.Click:InvokeServer(Get_Specific_Closest().Name);
         end
     end
     --// Auto Equip Best Pet + Sword
@@ -332,6 +438,25 @@ while task.wait(.05) do
     end
     if getgenv().Efficiency == false then
         if (getgenv().AutoKillNPC == true and getgenv().AutoPower == true) then
+            getgenv().AutoPower = false;
+            Power:Set(getgenv().AutoPower);
+        end
+    end
+    --// Set Power + Specific NPC Kill + Efficiency
+    if (getgenv().SpecificNPCEfficiency == true and Get_Specific_Closest() ~= nil) then
+        getgenv().AutoPower = false;
+        getgenv().AutoKillSpecificNPC = true
+        KillSpecific:Set(getgenv().AutoKillSpecificNPC);
+        Power:Set(getgenv().AutoPower);
+    end
+    if (getgenv().SpecificNPCEfficiency == true and Get_Specific_Closest() == nil) then
+        getgenv().AutoPower = true;
+        getgenv().AutoKillSpecificNPC = false
+        KillSpecific:Set(getgenv().AutoKillSpecificNPC);
+        Power:Set(getgenv().AutoPower);
+    end
+    if getgenv().SpecificNPCEfficiency == false then
+        if (getgenv().AutoKillSpecificNPC == true and getgenv().AutoPower == true) then
             getgenv().AutoPower = false;
             Power:Set(getgenv().AutoPower);
         end
