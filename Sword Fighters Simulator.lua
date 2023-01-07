@@ -352,7 +352,7 @@ if game.PlaceId == 11040063484 then
     end)
     
     task.spawn(function()
-        while task.wait(.075) do
+        while task.wait() do
             --// Auto Power
             if getgenv().AutoPower == true then
                 ClickRemotes.Click:InvokeServer();
