@@ -427,6 +427,15 @@ if game.PlaceId == 11040063484 then
                     AscendRemotes.Ascend:InvokeServer();
                 end
             end
+            --// Auto Pickup Coins
+            if getgenv().AutoCoins == true then
+                if not Pickups:GetChildren()[1] then
+                    repeat
+                        task.wait();
+                    until Pickups:GetChildren()[1];
+                end
+                Pickups:GetChildren()[1].CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame;
+            end
         end
     end)
     
@@ -449,16 +458,7 @@ if game.PlaceId == 11040063484 then
                 LocalPlayer.Character.HumanoidRootPart.CFrame = FloatingEggs[getgenv().SelectedEgg].HumanoidRootPart.CFrame * CFrame.new(0, -5.675, 7.5)
             end
             --// Walk Speed + Jump Power
-            Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
-            --// Auto Pickup Coins
-            if getgenv().AutoCoins == true then
-                if not Pickups:GetChildren()[1] then
-                    repeat
-                        task.wait();
-                    until Pickups:GetChildren()[1];
-                end
-                Pickups:GetChildren()[1].CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame;
-            end
+            LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
         end)
     end)
     
