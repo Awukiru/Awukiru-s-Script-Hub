@@ -428,12 +428,7 @@ if game.PlaceId == 11040063484 then
                 end
             end
             --// Auto Pickup Coins
-            if getgenv().AutoCoins == true then
-                if not Pickups:GetChildren()[1] then
-                    repeat
-                        task.wait();
-                    until Pickups:GetChildren()[1];
-                end
+            if getgenv().AutoCoins == true and Pickups:GetChildren()[1] then
                 Pickups:GetChildren()[1].CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame;
             end
         end
