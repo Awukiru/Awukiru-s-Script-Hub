@@ -305,7 +305,7 @@ if game.PlaceId == 11040063484 then
         Library:LoadConfig(getgenv().CreatedConfigName);
     end)
     
-    local LibraryToggle = UIToggle:CreateKeybind("Keybind", "T", function()
+    local LibraryToggle = UIToggle:CreateKeybind("Keybind", "LeftControl", function()
         Library:ToggleUI()
     end)
     
