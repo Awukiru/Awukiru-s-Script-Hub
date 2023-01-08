@@ -5,7 +5,7 @@ if game.PlaceId == 11040063484 then
     local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
-    local SellTab = Window:CreateTab("Sell/Delete/Forge", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local SellTab = Window:CreateTab("Sell|Delete|Forge", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local QuestsTab = Window:CreateTab("Quests", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
@@ -15,7 +15,7 @@ if game.PlaceId == 11040063484 then
     local Main = MainTab:CreateSection("Main");
     local Equip = EquipTab:CreateSection("Equip");
     local Eggs = EggsTab:CreateSection("Eggs");
-    local Sell = SellTab:CreateSection("Sell/Delete/Forge");
+    local Sell = SellTab:CreateSection("Sell|Delete|Forge");
     local Player = PlayerTab:CreateSection("Player");
     local Quests = QuestsTab:CreateSection("Quests");
     local Teleport = TeleportTab:CreateSection("Teleports");
