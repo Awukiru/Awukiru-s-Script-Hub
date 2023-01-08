@@ -5,7 +5,7 @@ if game.PlaceId == 11040063484 then
     local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
-    local SellTab = Window:CreateTab("Sell/Delete", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local SellTab = Window:CreateTab("Sell/Delete/Forge", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local QuestsTab = Window:CreateTab("Quests", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
@@ -15,7 +15,7 @@ if game.PlaceId == 11040063484 then
     local Main = MainTab:CreateSection("Main");
     local Equip = EquipTab:CreateSection("Equip");
     local Eggs = EggsTab:CreateSection("Eggs");
-    local Sell = SellTab:CreateSection("Sell/Delete");
+    local Sell = SellTab:CreateSection("Sell/Delete/Forge");
     local Player = PlayerTab:CreateSection("Player");
     local Quests = QuestsTab:CreateSection("Quests");
     local Teleport = TeleportTab:CreateSection("Teleports");
@@ -40,6 +40,7 @@ if game.PlaceId == 11040063484 then
     local SwordRemotes = ReplicatedStorage.Packages.Knit.Services.WeaponInvService.RF;
     local EggRemotes = ReplicatedStorage.Packages.Knit.Services.EggService.RF;
     local QuestRemotes = ReplicatedStorage.Packages.Knit.Services.QuestService.RF;
+    local ForgeRemotes = ReplicatedStorage.Packages.Knit.Services.ForgeService.RF;
     local Npcs = Workspace.Live.NPCs.Client;
     local Pickups = Workspace.Live.Pickups;
     local AscendProgress = PlayerGui.Ascend.Background.ImageFrame.Window.Progress.Progress;
@@ -192,6 +193,7 @@ if game.PlaceId == 11040063484 then
     getgenv().SelectedEgg2 = "";
     getgenv().HatchAmount = nil
     getgenv().AutoDeleteSword = false;
+    getgenv().SwordForge = false;
     getgenv().AutoDeletePet = false;
     getgenv().WalkSpeed = nil;
     getgenv().InfiniteJump = false;
@@ -270,12 +272,16 @@ if game.PlaceId == 11040063484 then
     local Amount_Selector = Eggs:CreateDropdown("Select Egg Amount", {1, 2, 3, 4}, 1, 0.25, function(Value)
         getgenv().HatchAmount = Value;
     end)
+
+    local SwordForge = Sell:CreateToggle("Auto Forge Swords", getgenv().SwordForge, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().SwordForge = Value;
+    end)
     
-    local SwordDelete = Sell:CreateToggle("Auto Sell/Delete Unequiped Swords", getgenv().AutoDeleteSword, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local SwordDelete = Sell:CreateToggle("Auto Sell Unequiped Swords", getgenv().AutoDeleteSword, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoDeleteSword = Value;
     end)
     
-    local PetDelete = Sell:CreateToggle("Auto Sell/Delete Unequiped Pets", getgenv().AutoDeletePet, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local PetDelete = Sell:CreateToggle("Auto Delete Unequiped Pets", getgenv().AutoDeletePet, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoDeletePet = Value;
     end)
     
@@ -426,6 +432,7 @@ if game.PlaceId == 11040063484 then
 
     task.spawn(function()
         while task.wait(1) do
+            --// Auto Quests
             if getgenv().Santa == true then
                 QuestRemotes.ActionQuest:InvokeServer("Christmas2022");
             end
@@ -467,6 +474,14 @@ if game.PlaceId == 11040063484 then
             end
             if getgenv().Area11 == true then
                 QuestRemotes.ActionQuest:InvokeServer("Area 11");
+            end
+            --// Auto Forge Swords
+            if getgenv().SwordForge == true then
+                for i, v in next, WeaponInv:GetChildren() do
+                    if v:IsA("Frame") and v.Parent == WeaponInv then
+                        ForgeRemotes.Forge:InvokeServer(v.Name)
+                    end
+                end
             end
         end
     end)
