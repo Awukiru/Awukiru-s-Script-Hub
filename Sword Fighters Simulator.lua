@@ -4,19 +4,21 @@ if game.PlaceId == 11040063484 then
     local Window = Library:CreateWindow("By Awukiru", true);
     local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
-    local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local SellTab = Window:CreateTab("Sell/Delete", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local QuestsTab = Window:CreateTab("Quests", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local TeleportTab = Window:CreateTab("Teleports", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local MiscTab = Window:CreateTab("Misc", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local SettingsTab = Window:CreateTab("Settings", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local UIToggleTab = Window:CreateTab("UI Toggle", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local Main = MainTab:CreateSection("Main");
     local Equip = EquipTab:CreateSection("Equip");
-    local Teleport = TeleportTab:CreateSection("Teleports");
     local Eggs = EggsTab:CreateSection("Eggs");
     local Sell = SellTab:CreateSection("Sell/Delete");
     local Player = PlayerTab:CreateSection("Player");
+    local Quests = QuestsTab:CreateSection("Quests");
+    local Teleport = TeleportTab:CreateSection("Teleports");
     local Misc = MiscTab:CreateSection("Misc");
     local Settings = SettingsTab:CreateSection("Settings");
     local UIToggle = UIToggleTab:CreateSection("UI Toggle");
@@ -37,6 +39,7 @@ if game.PlaceId == 11040063484 then
     local PetRemotes = ReplicatedStorage.Packages.Knit.Services.PetInvService.RF;
     local SwordRemotes = ReplicatedStorage.Packages.Knit.Services.WeaponInvService.RF;
     local EggRemotes = ReplicatedStorage.Packages.Knit.Services.EggService.RF;
+    local QuestRemotes = ReplicatedStorage.Packages.Knit.Services.QuestService.RF;
     local Npcs = Workspace.Live.NPCs.Client;
     local Pickups = Workspace.Live.Pickups;
     local AscendProgress = PlayerGui.Ascend.Background.ImageFrame.Window.Progress.Progress;
@@ -197,6 +200,20 @@ if game.PlaceId == 11040063484 then
     getgenv().RandomConfigNumber = math.random(1e5, 9e5);
     getgenv().CreatedConfigName = "";
     getgenv().NewConfigName = "Config-" .. getgenv().RandomConfigNumber;
+    getgenv().Area1 = false;
+    getgenv().Area2 = false;
+    getgenv().Area3 = false;
+    getgenv().Area4 = false;
+    getgenv().Area5 = false;
+    getgenv().Area6 = false;
+    getgenv().Area7 = false;
+    getgenv().Area8 = false;
+    getgenv().Area9 = false;
+    getgenv().Area10 = false;
+    getgenv().Area11 = false;
+    getgenv().Santa = false;
+    getgenv().SwordMaster = false;
+    getgenv().SoulTeacher = false;
     
     --// The Ui Lib Stuff Ye
     local Efficiency = Main:CreateToggle("Autofarm Efficiency Mode (All NPC's)", getgenv().Efficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
@@ -237,10 +254,6 @@ if game.PlaceId == 11040063484 then
         getgenv().AutoBestSword = Value;
     end)
     
-    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
-        getgenv().AreaToTpTo = Game_Areas[Value];
-    end)
-    
     Teleport:CreateButton("Teleport", function()
         LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().AreaToTpTo;
     end)
@@ -272,6 +285,66 @@ if game.PlaceId == 11040063484 then
     
     local InfiniteJump = Player:CreateToggle("Infinite Jump", getgenv().InfiniteJump, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().InfiniteJump = Value;
+    end)
+
+    local Santa = Quests:CreateToggle("Auto Santa Quests", getgenv().Santa, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Santa = Value;
+    end)
+    
+    local SwordMaster = Quests:CreateToggle("Auto Sword Master Quests", getgenv().SwordMaster, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().SwordMaster = Value;
+    end)
+    
+    local SoulTeacher = Quests:CreateToggle("Auto Soul Teacher Quests", getgenv().SoulTeacher, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().SoulTeacher = Value;
+    end)
+    
+    local Area_1 = Quests:CreateToggle("Auto Dark Forest Quests", getgenv().Area1, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area1 = Value;
+    end)
+    
+    local Area_2 = Quests:CreateToggle("Auto Skull Cove Quests", getgenv().Area2, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area2 = Value;
+    end)
+    
+    local Area_3 = Quests:CreateToggle("Auto Demon Hill Quests", getgenv().Area3, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area3 = Value;
+    end)
+    
+    local Area_4 = Quests:CreateToggle("Auto Polar Tundra Quests", getgenv().Area4, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area4 = Value;
+    end)
+    
+    local Area_5 = Quests:CreateToggle("Auto Aether City Quests", getgenv().Area5, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area5 = Value;
+    end)
+    
+    local Area_6 = Quests:CreateToggle("Auto Underworld Quests", getgenv().Area6, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area6 = Value;
+    end)
+    
+    local Area_7 = Quests:CreateToggle("Auto Ancient Sands Quests", getgenv().Area7, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area7 = Value;
+    end)
+    
+    local Area_8 = Quests:CreateToggle("Auto Enchanted Woods Quests", getgenv().Area8, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area8 = Value;
+    end)
+    
+    local Area_9 = Quests:CreateToggle("Auto Mystic Mines Quests", getgenv().Area9, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area9 = Value;
+    end)
+    
+    local Area_10 = Quests:CreateToggle("Auto Sacred Land Quests", getgenv().Area10, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area10 = Value;
+    end)
+    
+    local Area_11 = Quests:CreateToggle("Auto Marine Castle Quests", getgenv().Area11, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area11 = Value;
+    end)
+
+    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
+        getgenv().AreaToTpTo = Game_Areas[Value];
     end)
     
     local Coins = Misc:CreateToggle("Auto Coin Pickup", getgenv().AutoCoins, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
@@ -349,6 +422,53 @@ if game.PlaceId == 11040063484 then
         end
         if Character then Float(Character) end
         LocalPlayer.CharacterAdded:Connect(Float);
+    end)
+
+    task.spawn(function()
+        while task.wait(1) do
+            if getgenv().Santa == true then
+                QuestRemotes.ActionQuest:InvokeServer("Christmas2022");
+            end
+            if getgenv().SwordMaster == true then
+                QuestRemotes.ActionQuest:InvokeServer("Sword Master");
+            end
+            if getgenv().SoulTeacher == true then
+                QuestRemotes.ActionQuest:InvokeServer("Soul Teacher");
+            end
+            if getgenv().Area1 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 1");
+            end
+            if getgenv().Area2 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 2");
+            end
+            if getgenv().Area3 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 3");
+            end
+            if getgenv().Area4 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 4");
+            end
+            if getgenv().Area5 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 5");
+            end
+            if getgenv().Area6 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 6");
+            end
+            if getgenv().Area7 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 7");
+            end
+            if getgenv().Area8 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 8");
+            end
+            if getgenv().Area9 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 9");
+            end
+            if getgenv().Area10 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 10");
+            end
+            if getgenv().Area11 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 11");
+            end
+        end
     end)
     
     task.spawn(function()
