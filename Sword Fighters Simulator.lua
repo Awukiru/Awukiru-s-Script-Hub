@@ -237,7 +237,7 @@ if game.PlaceId == 11040063484 then
         getgenv().SpecificNPCEfficiency = Value;
     end)
     
-    local SelectSpecific = Main:CreateDropdown("Chose NPC Tp Auto Kill", Game_Npcs, nil, 0.25, function(Value)
+    local SelectSpecific = Main:CreateDropdown("Chose NPC Tp Auto Kill", Game_Npcs, nil, true, 0.25, function(Value)
         getgenv().NpcToFarm = Value;
     end)
     
@@ -265,12 +265,12 @@ if game.PlaceId == 11040063484 then
         getgenv().AutoHatch = Value;
     end)
     
-    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd"}, nil, 0.25, function(Value)
+    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd"}, nil, true, 0.25, function(Value)
         getgenv().SelectedEgg = string.match(Value, "(%D+)%s%-%s");
         getgenv().SelectedEgg2 = Egg_Table[getgenv().SelectedEgg];
     end)
     
-    local Amount_Selector = Eggs:CreateDropdown("Select Egg Amount", {1, 2, 3, 4}, 1, 0.25, function(Value)
+    local Amount_Selector = Eggs:CreateDropdown("Select Egg Amount", {1, 2, 3, 4}, 1, true, 0.25, function(Value)
         getgenv().HatchAmount = Value;
     end)
 
@@ -293,7 +293,7 @@ if game.PlaceId == 11040063484 then
     local InfiniteJump = Player:CreateToggle("Infinite Jump", getgenv().InfiniteJump, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().InfiniteJump = Value;
     end)
-    
+
     local Executioner = Quests:CreateToggle("Auto Executioner Quests", getgenv().Executioner, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().Executioner = Value;
     end)
@@ -354,7 +354,7 @@ if game.PlaceId == 11040063484 then
         getgenv().Area11 = Value;
     end)
 
-    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, 0.25, function(Value)
+    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, true, 0.25, function(Value)
         getgenv().AreaToTpTo = Game_Areas[Value];
     end)
     
@@ -366,7 +366,7 @@ if game.PlaceId == 11040063484 then
         getgenv().AutoAscend = Value;
     end)
     
-    local Configs = Settings:CreateDropdown("Created Configs", Library:GetConfigs(), nil, 0.25, function(Value)
+    local Configs = Settings:CreateDropdown("Created Configs", Library:GetConfigs(), nil, true, 0.25, function(Value)
         getgenv().CreatedConfigName = Value;
     end)
     
