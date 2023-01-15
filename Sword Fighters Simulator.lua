@@ -2,9 +2,10 @@ if game.PlaceId == 11040063484 then
     --// Library
     local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Jonatanortiz2/home/main/Roblox-Projects/Jons-Ui-Library/Source.lua'))();
     local Window = Library:CreateWindow("By Awukiru", true);
-    local MainTab = Window:CreateTab("Main", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local AutofarmingTab = Window:CreateTab("Autofarming", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    local ShopTab = Window:CreateTab("Shops", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local SellTab = Window:CreateTab("Sell|Delete|Forge", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local PlayerTab = Window:CreateTab("Player", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local QuestsTab = Window:CreateTab("Quests", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
@@ -12,9 +13,10 @@ if game.PlaceId == 11040063484 then
     local MiscTab = Window:CreateTab("Misc", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local SettingsTab = Window:CreateTab("Settings", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local UIToggleTab = Window:CreateTab("UI Toggle", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
-    local Main = MainTab:CreateSection("Main");
+    local Autofarming = AutofarmingTab:CreateSection("Autofarming");
     local Equip = EquipTab:CreateSection("Equip");
     local Eggs = EggsTab:CreateSection("Eggs");
+    local Shop = ShopTab:CreateSection("Dungeon Shop");
     local Sell = SellTab:CreateSection("Sell|Delete|Forge");
     local Player = PlayerTab:CreateSection("Player");
     local Quests = QuestsTab:CreateSection("Quests");
@@ -41,6 +43,8 @@ if game.PlaceId == 11040063484 then
     local EggRemotes = ReplicatedStorage.Packages.Knit.Services.EggService.RF;
     local QuestRemotes = ReplicatedStorage.Packages.Knit.Services.QuestService.RF;
     local ForgeRemotes = ReplicatedStorage.Packages.Knit.Services.ForgeService.RF;
+    local DismantleRemotes = ReplicatedStorage.Packages.Knit.Services.PetLevelingService.RF;
+    local DungeonShopRemotes = ReplicatedStorage.Packages.Knit.Services.LimitedShopsService.RF;
     local Npcs = Workspace.Live.NPCs.Client;
     local Pickups = Workspace.Live.Pickups;
     local AscendProgress = PlayerGui.Ascend.Background.ImageFrame.Window.Progress.Progress;
@@ -63,6 +67,7 @@ if game.PlaceId == 11040063484 then
         ["Ore Egg"] = "Egg 17",
         ["Leaf Egg"] = "Egg 19",
         ["Aquatic Egg"] = "Egg 21",
+        ["Holy Egg"] = "Egg 23",
     }
     local Game_Areas = {
         ["Dark Forest"] = CFrame.new(326, 150, -0),
@@ -76,6 +81,7 @@ if game.PlaceId == 11040063484 then
         ["Mystic Mines"] = CFrame.new(7191, -113, -4646),
         ["Sacred Land"] = CFrame.new(9397, 150, -4349),
         ["Marine Castle"] = CFrame.new(13202, 167, -3421),
+        ["High Havens"] = CFrame.new(16389, 308, -3530),
     }
     local Game_Npcs = {
         "Dark Commander",
@@ -136,6 +142,23 @@ if game.PlaceId == 11040063484 then
         "Treasure Chest",
         "Madman",
         "Goblin",
+        "Feathered Warrior",
+        "Cthulhu",
+        "Centaur King",
+        "Celestial Gatekeeper",
+        "Skywatcher",
+        "Stormbringer",
+        "Vulcanus Maximus",
+        "Lich Spirit",
+        "Fallen Star",
+        "Demonic Altar",
+    }
+    local DungeonShopItems = {
+        ["2x Coin Boost"] = 1,
+        ["Super Luck Boost"] = 2,
+        ["2x Power Boost"] = 3,
+        ["Raid Tickets"] = 4,
+        ["2x Secret Luck Boost"] = 5,
     }
     
     --// Functions
@@ -192,6 +215,7 @@ if game.PlaceId == 11040063484 then
     getgenv().SelectedEgg = "";
     getgenv().SelectedEgg2 = "";
     getgenv().HatchAmount = nil
+    getgenv().PetDismantle = false;
     getgenv().AutoDeleteSword = false;
     getgenv().SwordForge = false;
     getgenv().AutoDeletePet = false;
@@ -213,35 +237,42 @@ if game.PlaceId == 11040063484 then
     getgenv().Area9 = false;
     getgenv().Area10 = false;
     getgenv().Area11 = false;
+    getgenv().Area12 = false;
     getgenv().Santa = false;
     getgenv().SwordMaster = false;
     getgenv().Executioner = false;
     getgenv().SoulTeacher = false;
+    getgenv().EggMaster = false;
+    getgenv().CoinBoost = false;
+    getgenv().SuperLuckBoost = false;
+    getgenv().PowerBoost = false;
+    getgenv().RaidTickets = false;
+    getgenv().SecretLuck = false;
     
     --// The Ui Lib Stuff Ye
-    local Efficiency = Main:CreateToggle("Autofarm Efficiency Mode (All NPC's)", getgenv().Efficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local Efficiency = Autofarming:CreateToggle("Autofarm Efficiency Mode (All NPC's)", getgenv().Efficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().Efficiency = Value;
     end)
     
-    local Power = Main:CreateToggle("Auto Power", getgenv().AutoPower, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local Power = Autofarming:CreateToggle("Auto Power", getgenv().AutoPower, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoPower = Value;
     end)
     
-    local Kill = Main:CreateToggle("Auto Kill Closest NPC's", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local Kill = Autofarming:CreateToggle("Auto Kill Closest NPC's", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoKillNPC = Value;
     end)
     
-    local Label = Main:CreateLabel("Specific NPC's")
+    local Label = Autofarming:CreateLabel("Specific NPC's")
     
-    local SpecificEfficiency = Main:CreateToggle("Autofarm Efficiency Mode (Specific NPC's)", getgenv().SpecificNPCEfficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local SpecificEfficiency = Autofarming:CreateToggle("Autofarm Efficiency Mode (Specific NPC's)", getgenv().SpecificNPCEfficiency, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().SpecificNPCEfficiency = Value;
     end)
     
-    local SelectSpecific = Main:CreateDropdown("Chose NPC Tp Auto Kill", Game_Npcs, nil, true, 0.25, function(Value)
+    local SelectSpecific = Autofarming:CreateDropdown("Chose NPC Tp Auto Kill", Game_Npcs, nil, true, 0.25, function(Value)
         getgenv().NpcToFarm = Value;
     end)
     
-    local KillSpecific = Main:CreateToggle("Auto Kill Chosen NPC", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local KillSpecific = Autofarming:CreateToggle("Auto Kill Chosen NPC", getgenv().AutoKillNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoKillSpecificNPC = Value;
     end)
     
@@ -258,14 +289,27 @@ if game.PlaceId == 11040063484 then
     end)
     
     Teleport:CreateButton("Teleport", function()
-        LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().AreaToTpTo;
+        local Foot = LocalPlayer.Character["RightFoot"];
+        local Hrp = LocalPlayer.Character["HumanoidRootPart"];
+
+        local dConnection = false;
+
+        task.spawn(function()
+            task.wait(1);
+            getgenv().Connection = Foot.Touched:Connect(function()
+                dConnection = true;
+            end)
+        end)
+
+        repeat task.wait(); Hrp.CFrame = getgenv().AreaToTpTo until dConnection == true;
+        getgenv().Connection:Disconnect();
     end)
     
     local Egg_Hatcher = Eggs:CreateToggle("Auto Hatch Selected Egg", getgenv().AutoHatch, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoHatch = Value;
     end)
     
-    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd"}, nil, true, 0.25, function(Value)
+    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd", "Holy Egg - $168Td"}, nil, true, 0.25, function(Value)
         getgenv().SelectedEgg = string.match(Value, "(%D+)%s%-%s");
         getgenv().SelectedEgg2 = Egg_Table[getgenv().SelectedEgg];
     end)
@@ -274,15 +318,35 @@ if game.PlaceId == 11040063484 then
         getgenv().HatchAmount = Value;
     end)
 
+    local DungeonShop1 = Shop:CreateToggle("Auto Buy 2x Coin Boost", getgenv().CoinBoost, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().CoinBoost = Value;
+    end)
+
+    local DungeonShop2 = Shop:CreateToggle("Auto Buy Super Luck Boost", getgenv().SuperLuckBoost, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().SuperLuckBoost = Value;
+    end)
+
+    local DungeonShop3 = Shop:CreateToggle("Auto Buy 2x Power Boost", getgenv().PowerBoost, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().PowerBoost = Value;
+    end)
+
+    local DungeonShop4 = Shop:CreateToggle("Auto Buy Raid Tickets", getgenv().RaidTickets, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().RaidTickets = Value;
+    end)
+
+    local DungeonShop5 = Shop:CreateToggle("Auto Buy 2x Secret Luck Boost", getgenv().SecretLuck, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().SecretLuck = Value;
+    end)
+
     local SwordForge = Sell:CreateToggle("Auto Forge Swords", getgenv().SwordForge, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().SwordForge = Value;
     end)
     
-    local SwordDelete = Sell:CreateToggle("Auto Sell Unequiped Swords", getgenv().AutoDeleteSword, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local SwordDelete = Sell:CreateToggle("Auto Sell Unequiped/Unlocked Swords", getgenv().AutoDeleteSword, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoDeleteSword = Value;
     end)
     
-    local PetDelete = Sell:CreateToggle("Auto Delete Unequiped Pets", getgenv().AutoDeletePet, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+    local PetDelete = Sell:CreateToggle("Auto Delete Unequiped/Unlocked Pets", getgenv().AutoDeletePet, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoDeletePet = Value;
     end)
     
@@ -304,6 +368,10 @@ if game.PlaceId == 11040063484 then
     
     local SwordMaster = Quests:CreateToggle("Auto Sword Master Quests", getgenv().SwordMaster, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().SwordMaster = Value;
+    end)
+
+    local EggMaster = Quests:CreateToggle("Auto Egg Master Quests", getgenv().EggMaster, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().EggMaster = Value;
     end)
     
     local SoulTeacher = Quests:CreateToggle("Auto Soul Teacher Quests", getgenv().SoulTeacher, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
@@ -354,7 +422,11 @@ if game.PlaceId == 11040063484 then
         getgenv().Area11 = Value;
     end)
 
-    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle"}, nil, true, 0.25, function(Value)
+    local Area_12 = Quests:CreateToggle("Auto High Havens Quests", getgenv().Area12, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().Area12 = Value;
+    end)
+
+    local AreaTeleports = Teleport:CreateDropdown("Selected Area To Teleport To", {"Dark Forest", "Skull Cove", "Demon Hill", "Polar Tundra", "Aether City", "Underworld", "Ancient Sands", "Enchanted Woods", "Mystic Mines", "Sacred Land", "Marine Castle", "High Havens"}, nil, true, 0.25, function(Value)
         getgenv().AreaToTpTo = Game_Areas[Value];
     end)
     
@@ -364,6 +436,10 @@ if game.PlaceId == 11040063484 then
     
     local Ascend = Misc:CreateToggle("Auto Ascend", getgenv().AutoAscend, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoAscend = Value;
+    end)
+
+    local PetDismantle = Misc:CreateToggle("Auto Dismantle Unequiped/Unlocked Pets", getgenv().PetDismantle, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
+        getgenv().PetDismantle = Value;
     end)
     
     local Configs = Settings:CreateDropdown("Created Configs", Library:GetConfigs(), nil, true, 0.25, function(Value)
@@ -434,7 +510,6 @@ if game.PlaceId == 11040063484 then
         if Character then Float(Character) end
         LocalPlayer.CharacterAdded:Connect(Float);
     end)
-
     task.spawn(function()
         while task.wait(1) do
             --// Auto Quests
@@ -446,6 +521,9 @@ if game.PlaceId == 11040063484 then
             end
             if getgenv().SwordMaster == true then
                 QuestRemotes.ActionQuest:InvokeServer("Sword Master");
+            end
+            if getgenv().EggMaster == true then
+                QuestRemotes.ActionQuest:InvokeServer("Egg Master");
             end
             if getgenv().SoulTeacher == true then
                 QuestRemotes.ActionQuest:InvokeServer("Soul Teacher");
@@ -483,6 +561,9 @@ if game.PlaceId == 11040063484 then
             if getgenv().Area11 == true then
                 QuestRemotes.ActionQuest:InvokeServer("Area 11");
             end
+            if getgenv().Area12 == true then
+                QuestRemotes.ActionQuest:InvokeServer("Area 12");
+            end
             --// Auto Forge Swords
             if getgenv().SwordForge == true then
                 for i, v in next, WeaponInv:GetChildren() do
@@ -490,6 +571,21 @@ if game.PlaceId == 11040063484 then
                         ForgeRemotes.Forge:InvokeServer(v.Name)
                     end
                 end
+            end
+            if getgenv().CoinBoost == true then
+                DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["2x Coin Boost"])
+            end
+            if getgenv().SuperLuckBoost == true then
+                DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["Super Luck Boost"])
+            end
+            if getgenv().PowerBoost == true then
+                DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["2x Power Boost"])
+            end
+            if getgenv().RaidTickets == true then
+                DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["Raid Tickets"])
+            end
+            if getgenv().SecretLuck == true then
+                DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["2x Secret Luck Boost"])
             end
         end
     end)
@@ -529,32 +625,37 @@ if game.PlaceId == 11040063484 then
             if getgenv().AutoDeleteSword == true then
                 local SwordFound = false;
                 local Swords = {};
-        
+
                 for i, v in next, WeaponInv:GetDescendants() do
-                    if v:IsA("Frame") and v.Name == "Equipped" then
-                        if v.Visible == false then
-                            if v then
-                                SwordFound = true;
-                                Swords[tostring(v.Parent.Parent.Name)] = true;
+                    if v:IsA("Frame") and v.Parent == WeaponInv then
+                        if v:FindFirstChild("Equipped", true).Visible == false then
+                            if v:FindFirstChild("Lock", true).Visible == false then
+                                if v then
+                                    SwordFound = true;
+                                    Swords[tostring(v.Name)] = true;
+                                end
                             end
                         end
                     end
                 end
+
                 if SwordFound == true then
-                    SwordRemotes.MultiSell:InvokeServer(Swords);
+                    SwordRemotes.MultiSell:InvokeServer(Swords)
                     SwordFound = false;
                 end
             end
             if getgenv().AutoDeletePet == true then
                 local PetFound = false;
                 local Pets = {};
-        
+                
                 for i, v in next, PetInv:GetDescendants() do
-                    if v:IsA("Frame") and v.Name == "Equipped" then
-                        if v.Visible == false then
-                            if v then
-                                PetFound = true;
-                                Pets[tostring(v.Parent.Parent.Name)] = true;
+                    if v:IsA("Frame") and v.Parent == PetInv then
+                        if v:FindFirstChild("Equipped", true).Visible == false then
+                            if v:FindFirstChild("Lock", true).Visible == false then
+                                if v then
+                                    PetFound = true;
+                                    Pets[tostring(v.Name)] = true;
+                                end
                             end
                         end
                     end
@@ -562,6 +663,27 @@ if game.PlaceId == 11040063484 then
                 if PetFound == true then
                     PetRemotes.MultiDelete:InvokeServer(Pets);
                     PetFound = false;
+                end
+            end
+            if getgenv().PetDismantle == true then
+                local dPetFound = false;
+                local dPets = {};
+
+                for i, v in next, PetInv:GetDescendants() do
+                    if v:IsA("Frame") and v.Parent == PetInv then
+                        if v:FindFirstChild("Equipped", true).Visible == false then
+                            if v:FindFirstChild("Lock", true).Visible == false then
+                                if v then
+                                    dPetFound = true;
+                                    table.insert(dPets, v.Name);
+                                end
+                            end
+                        end
+                    end
+                end
+                if dPetFound == true then
+                    DismantleRemotes.Dismantle:InvokeServer(dPets);
+                    dPetFound = false;
                 end
             end
             --// Auto Ascend
@@ -582,13 +704,13 @@ if game.PlaceId == 11040063484 then
             --// Closest NPC's Teleport
             if getgenv().AutoKillNPC == true then
                 if Closest_NPC() ~= nil then
-                    LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().CirclePart.CFrame * CFrame.new(0, 3, -2.5);
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = Closest_NPC().HumanoidRootPart.CFrame * CFrame.new(0, 6, -2.5);
                 end
             end
             --// Specific NPC's Teleport
             if getgenv().AutoKillSpecificNPC == true then
                 if Get_Specific_Closest() ~= nil then
-                    LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().CirclePart.CFrame * CFrame.new(0, 3, -2.5);
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().HumanoidRootPart.CFrame * CFrame.new(0, 6, -2.5);
                 end
             end
             --// Teleport To Egg
