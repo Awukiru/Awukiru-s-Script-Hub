@@ -309,7 +309,7 @@ if game.PlaceId == 11040063484 then
         getgenv().AutoHatch = Value;
     end)
     
-    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd", "Holy Egg - $168Td", "Volcano Egg - "}, nil, true, 0.25, function(Value)
+    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd", "Holy Egg - $168Td", "Volcano Egg - $10Qad"}, nil, true, 0.25, function(Value)
         getgenv().SelectedEgg = string.match(Value, "(%D+)%s%-%s");
         getgenv().SelectedEgg2 = Egg_Table[getgenv().SelectedEgg];
     end)
