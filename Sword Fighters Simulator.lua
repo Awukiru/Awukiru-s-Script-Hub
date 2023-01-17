@@ -68,6 +68,7 @@ if game.PlaceId == 11040063484 then
         ["Leaf Egg"] = "Egg 19",
         ["Aquatic Egg"] = "Egg 21",
         ["Holy Egg"] = "Egg 23",
+        ["Volcano Egg"] = "Egg 25",
     }
     local Game_Areas = {
         ["Dark Forest"] = CFrame.new(326, 150, -0),
@@ -238,7 +239,6 @@ if game.PlaceId == 11040063484 then
     getgenv().Area10 = false;
     getgenv().Area11 = false;
     getgenv().Area12 = false;
-    getgenv().Santa = false;
     getgenv().SwordMaster = false;
     getgenv().Executioner = false;
     getgenv().SoulTeacher = false;
@@ -309,7 +309,7 @@ if game.PlaceId == 11040063484 then
         getgenv().AutoHatch = Value;
     end)
     
-    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd", "Holy Egg - $168Td"}, nil, true, 0.25, function(Value)
+    local Egg_Selector = Eggs:CreateDropdown("Select Egg", {"Weak Egg - $500", "Strong Egg - $50K", "Paradise Egg - $3.75M", "Bamboo Egg - $6.75B", "Frozen Egg - $20.25Qa", "Soft Egg - $52.49Qi", "Lava Egg - $240Sx", "Mummified Egg - $780Sp", "Lost Egg - $2.24No", "Ore Egg - $3Dc", "Leaf Egg - $11.24Ud", "Aquatic Egg - $40.5Dd", "Holy Egg - $168Td", "Volcano Egg - "}, nil, true, 0.25, function(Value)
         getgenv().SelectedEgg = string.match(Value, "(%D+)%s%-%s");
         getgenv().SelectedEgg2 = Egg_Table[getgenv().SelectedEgg];
     end)
@@ -362,10 +362,6 @@ if game.PlaceId == 11040063484 then
         getgenv().Executioner = Value;
     end)
 
-    local Santa = Quests:CreateToggle("Auto Santa Quests", getgenv().Santa, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
-        getgenv().Santa = Value;
-    end)
-    
     local SwordMaster = Quests:CreateToggle("Auto Sword Master Quests", getgenv().SwordMaster, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().SwordMaster = Value;
     end)
@@ -515,9 +511,6 @@ if game.PlaceId == 11040063484 then
             --// Auto Quests
             if getgenv().Executioner == true then
                 QuestRemotes.ActionQuest:InvokeServer("Executioner");
-            end
-            if getgenv().Santa == true then
-                QuestRemotes.ActionQuest:InvokeServer("Christmas2022");
             end
             if getgenv().SwordMaster == true then
                 QuestRemotes.ActionQuest:InvokeServer("Sword Master");
