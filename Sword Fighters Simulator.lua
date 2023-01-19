@@ -189,7 +189,7 @@ if game.PlaceId == 11040063484 then
         
         for a, b in next, Npcs:GetChildren() do
             if b:IsA("Model") then
-                local Npc_Name = b.HumanoidRootPart.NPCTag.NameLabel.Text;
+                local Npc_Name = b.HumanoidRootPart:WaitForChild("NPCTag"):WaitForChild("NameLabel").Text;
                 for c, d in next, Game_Npcs do
                     if string.match(d, Npc_Name) == getgenv().NpcToFarm then
                         local Magnitude = (HumanoidRootPart.Position - b.HumanoidRootPart.Position).Magnitude;
