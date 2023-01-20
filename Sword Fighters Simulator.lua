@@ -518,6 +518,7 @@ if game.PlaceId == 11040063484 then
                     coroutine.wrap(function()
                         Dungeon1 = true;
                         repeat task.wait() until Door_1.Position.Y < 0
+                        task.wait(5)
                         if Door_1.Position.Y < 0 then
                             if getgenv().EasyDungeon == true then
                                 HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 1"].CFrame;
