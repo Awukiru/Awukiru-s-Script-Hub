@@ -187,7 +187,7 @@ if game.PlaceId == 11040063484 then
     local hasProperty = function(a, b)
         local c = a[b];
     end
-    
+
     local Closest_NPC = function()
         local Closest = nil;
         local Distance = 9e9;
@@ -515,21 +515,22 @@ if game.PlaceId == 11040063484 then
         local Door_2 = Lobby.Doors["Dungeon 2"];
         
         local Dungeon1 = false;
+        local Dungeon2 = false;
+        local Dungeon3 = false;
 
         task.spawn(function()
             RunService.Stepped:Connect(function()
                 if (getgenv().EasyDungeon == true or getgenv().HardDungeon == true) and Dungeon1 == false then
                     coroutine.wrap(function()
                         Dungeon1 = true;
-                        repeat task.wait() until Door_1.Position.Y < 0
+                        repeat task.wait() until (Door_1.Position.Y < 0 or Door_2.Position.Y < 0
+                        task.wait(5)
                         if Door_1.Position.Y < 0 then
                             if getgenv().EasyDungeon == true then
-                                task.wait(5)
                                 HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 1"].CFrame;
                             end
                         elseif Door_2.Position.Y < 0 then
                             if getgenv().HardDungeon == true then
-                                task.wait(5)
                                 HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 2"].CFrame;
                             end
                         end
@@ -539,12 +540,10 @@ if game.PlaceId == 11040063484 then
             end)
         end)
         
-        local Dungeon2 = false;
-        
         task.spawn(function()
             RunService.Stepped:Connect(function()
-                local Button = game:GetService("Workspace").Live.Dungeons:FindFirstChild("ContinueButton", true);
                 if (getgenv().EasyDungeon == true or getgenv().HardDungeon == true) and Dungeon2 == false then
+                    local Button = game:GetService("Workspace").Live.Dungeons:FindFirstChild("ContinueButton", true);
                     if Button then
                         coroutine.wrap(function()
                             Dungeon2 = true;
@@ -559,8 +558,6 @@ if game.PlaceId == 11040063484 then
                 end
             end)
         end)
-
-        local Dungeon3 = false;
         
         task.spawn(function()
             RunService.Stepped:Connect(function()
