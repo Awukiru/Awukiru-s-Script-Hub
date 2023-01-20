@@ -184,6 +184,10 @@ if game.PlaceId == 11040063484 then
     }
     
     --// Functions
+    local hasProperty = function(a, b)
+        local c = a[b];
+    end
+    
     local Closest_NPC = function()
         local Closest = nil;
         local Distance = 9e9;
@@ -518,13 +522,14 @@ if game.PlaceId == 11040063484 then
                     coroutine.wrap(function()
                         Dungeon1 = true;
                         repeat task.wait() until Door_1.Position.Y < 0
-                        task.wait(5)
                         if Door_1.Position.Y < 0 then
                             if getgenv().EasyDungeon == true then
+                                task.wait(5)
                                 HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 1"].CFrame;
                             end
                         elseif Door_2.Position.Y < 0 then
                             if getgenv().HardDungeon == true then
+                                task.wait(5)
                                 HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 2"].CFrame;
                             end
                         end
