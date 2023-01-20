@@ -518,10 +518,14 @@ if game.PlaceId == 11040063484 then
                     coroutine.wrap(function()
                         Dungeon1 = true;
                         repeat task.wait() until Door_1.Position.Y < 0
-                        if Door_1.Position.Y < 0 and getgenv().EasyDungeon == true then
-                            HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 1"].CFrame;
-                        elseif Door_2.Position.Y < 0 and getgenv().HardDungeon == true then
-                            HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 2"].CFrame;
+                        if Door_1.Position.Y < 0 then
+                            if getgenv().EasyDungeon == true then
+                                HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 1"].CFrame;
+                            end
+                        elseif Door_2.Position.Y < 0 then
+                            if getgenv().HardDungeon == true then
+                                HumanoidRootPart.CFrame = Lobby.JoinParts["Dungeon 2"].CFrame;
+                            end
                         end
                         Dungeon1 = false;
                     end)()
