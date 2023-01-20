@@ -523,7 +523,7 @@ if game.PlaceId == 11040063484 then
                 if (getgenv().EasyDungeon == true or getgenv().HardDungeon == true) and Dungeon1 == false then
                     coroutine.wrap(function()
                         Dungeon1 = true;
-                        repeat task.wait() until (Door_1.Position.Y < 0 or Door_2.Position.Y < 0
+                        repeat task.wait() until (Door_1.Position.Y < 0 or Door_2.Position.Y < 0)
                         task.wait(5)
                         if Door_1.Position.Y < 0 then
                             if getgenv().EasyDungeon == true then
