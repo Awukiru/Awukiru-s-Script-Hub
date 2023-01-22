@@ -505,7 +505,7 @@ if game.PlaceId == 11040063484 then
     task.spawn(function()
         game:GetService("UserInputService").JumpRequest:connect(function()
             if getgenv().InfiniteJump == true then
-                Character.Humanoid:ChangeState("Jumping")
+                LocalPlayer.Character.Humanoid:ChangeState("Jumping")
             end
         end)
     end)
