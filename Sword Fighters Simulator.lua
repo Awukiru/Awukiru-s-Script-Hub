@@ -49,7 +49,6 @@ if game.PlaceId == 11040063484 then
     local Character = LocalPlayer.Character;
     local HumanoidRootPart = Character.HumanoidRootPart;
     local PlayerGui = LocalPlayer.PlayerGui;
-    local MarketplaceService = game:GetService("MarketplaceService");
     local Workspace = game:GetService("Workspace");
     local ReplicatedStorage = game:GetService("ReplicatedStorage");
     local RunService = game:GetService("RunService");
@@ -721,6 +720,23 @@ if game.PlaceId == 11040063484 then
         end)
     end)
 
+    task.spawn(function()
+        RunService.Heartbeat:Connect(function()
+            --// Auto Power
+            if getgenv().AutoPower == true then
+                ClickRemotes.Click:InvokeServer();
+            end
+            --// Closest NPC Kill Aura
+            if getgenv().AutoKillNPC == true and Closest_NPC() ~= nil then
+                ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
+            end
+            --// Specific NPC Kill Aura
+            if getgenv().AutoKillSpecificNPC == true and Get_Specific_Closest() ~= nil then
+                ClickRemotes.Click:InvokeServer(Get_Specific_Closest().Name);
+            end
+        end)
+    end)
+
     local Two = false;
     
     task.spawn(function()
@@ -728,18 +744,6 @@ if game.PlaceId == 11040063484 then
             if Two == false then
                 coroutine.wrap(function()
                     Two = true
-                    --// Auto Power
-                    if getgenv().AutoPower == true then
-                        ClickRemotes.Click:InvokeServer();
-                    end
-                    --// Closest NPC Kill Aura
-                    if getgenv().AutoKillNPC == true and Closest_NPC() ~= nil then
-                        ClickRemotes.Click:InvokeServer(Closest_NPC().Name);
-                    end
-                    --// Specific NPC Kill Aura
-                    if getgenv().AutoKillSpecificNPC == true and Get_Specific_Closest() ~= nil then
-                        ClickRemotes.Click:InvokeServer(Get_Specific_Closest().Name);
-                    end
                     --// Auto Equip Best Pet + Sword
                     if getgenv().AutoBestBoth == true then
                         PetRemotes.EquipBest:InvokeServer();
