@@ -17,7 +17,7 @@ if game.PlaceId == 11040063484 then
     end)
     --// Library
     local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jonatanortiz2/home/main/Roblox-Projects/Jons-Ui-Library/Source.lua"))();
-    local Window = Library:CreateWindow("By Awukiru", true);
+    local Window = Library:CreateWindow("He", true);
     local AutofarmingTab = Window:CreateTab("Autofarming", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local DungeonTab = Window:CreateTab("Dungeon", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
