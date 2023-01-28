@@ -703,6 +703,7 @@ if game.PlaceId == 11040063484 then
                             end
                         end
                     end
+                    --// Dungeon Shop
                     if getgenv().CoinBoost == true then
                         DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["2x Coin Boost"]);
                     end
@@ -717,6 +718,10 @@ if game.PlaceId == 11040063484 then
                     end
                     if getgenv().SecretLuck == true then
                         DungeonShopRemotes.BuyItem:InvokeServer("DungeonShop", DungeonShopItems["2x Secret Luck Boost"]);
+                    end
+                    --// Teleport To Egg
+                    if getgenv().AutoHatch == true then
+                        LocalPlayer.Character.HumanoidRootPart.CFrame = FloatingEggs[getgenv().SelectedEgg].HumanoidRootPart.CFrame * CFrame.new(0, -5.675, 7.5)
                     end
                     task.wait(1);
                     One = false;
@@ -861,10 +866,6 @@ if game.PlaceId == 11040063484 then
                 if Get_Specific_Closest() ~= nil then
                     LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Specific_Closest().HumanoidRootPart.CFrame * CFrame.new(0, 6, -2.5);
                 end
-            end
-            --// Teleport To Egg
-            if getgenv().AutoHatch == true then
-                LocalPlayer.Character.HumanoidRootPart.CFrame = FloatingEggs[getgenv().SelectedEgg].HumanoidRootPart.CFrame * CFrame.new(0, -5.675, 7.5)
             end
             --// Walk Speed + Jump Power
             LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().WalkSpeed
