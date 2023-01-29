@@ -55,7 +55,7 @@ if game.PlaceId == 11040063484 then
     local WeaponInv = PlayerGui.WeaponInv.Background.ImageFrame.Window.WeaponHolder.WeaponScrolling;
     local PetInv = PlayerGui.PetInv.Background.ImageFrame.Window.PetHolder.PetScrolling;
     local FloatingEggs = Workspace.Live.FloatingEggs;
-    local Lobby = Workspace.Resources.Gamemodes.DungeonLobby;
+    --local Lobby = Workspace.Resources.Gamemodes.DungeonLobby;
     local ChatFrame = PlayerGui.Chat.Frame.ChatChannelParentFrame;
     local Chat = ChatFrame["Frame_MessageLogDisplay"].Scroller;
     local Egg_Table = {
@@ -227,9 +227,11 @@ if game.PlaceId == 11040063484 then
     getgenv().SpecificNPCEfficiency = false;
     getgenv().AutoKillSpecificNPC = false;
     getgenv().NpcToFarm = "";
+    --[[
     getgenv().EasyDungeon = false;
     getgenv().HardDungeon = false;
     getgenv().BeforeDungeon = LocalPlayer.Character.HumanoidRootPart.CFrame;
+    ]]--
     getgenv().AutoBestBoth = false;
     getgenv().AutoBestPet = false;
     getgenv().AutoBestSword = false;
@@ -299,7 +301,7 @@ if game.PlaceId == 11040063484 then
     local KillSpecific = Autofarming:CreateToggle("Auto Kill Chosen NPC", getgenv().AutoKillSpecificNPC, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoKillSpecificNPC = Value;
     end)
-    
+    --[[
     local EasyDungeon = Dungeon:CreateToggle("Auto Easy Dungeon", getgenv().EasyDungeon, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().EasyDungeon = Value;
     end)
@@ -307,7 +309,7 @@ if game.PlaceId == 11040063484 then
     local HardDungeon = Dungeon:CreateToggle("Auto Hard Dungeon", getgenv().HardDungeon, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().HardDungeon = Value;
     end)
-    
+    ]]--
     local BestBoth = Equip:CreateToggle("Auto Equip Best (Sword + Pet)", getgenv().AutoBestBoth, Color3.fromRGB(138, 43, 226), 0.25, function(Value)
         getgenv().AutoBestBoth = Value;
     end)
@@ -513,7 +515,7 @@ if game.PlaceId == 11040063484 then
             end
         end)
     end)
-    
+    --[[
     task.spawn(function()
         local Door_1 = Lobby.Doors["Dungeon 1"];
         local Door_2 = Lobby.Doors["Dungeon 2"];
@@ -605,6 +607,7 @@ if game.PlaceId == 11040063484 then
             end)
         end)
     end)
+    ]]--
     
     task.spawn(function()
         local Connection;
@@ -940,7 +943,7 @@ if game.PlaceId == 11040063484 then
             end
         end)
     end)
-    
+    --[[
     local Four = false;
     
     task.spawn(function()
@@ -995,4 +998,5 @@ if game.PlaceId == 11040063484 then
             end
         end)
     end)
+    ]]--
 end
