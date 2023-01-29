@@ -662,6 +662,9 @@ if game.PlaceId == 11040063484 then
                     if getgenv().SoulTeacher == true then
                         QuestRemotes.ActionQuest:InvokeServer("Soul Teacher");
                     end
+                    if getgenv().KeyQuest == true then
+                        QuestRemotes.ActionQuest:InvokeServer("Key Quest 1");
+                    end
                     if getgenv().Area1 == true then
                         QuestRemotes.ActionQuest:InvokeServer("Area 1");
                     end
@@ -697,6 +700,9 @@ if game.PlaceId == 11040063484 then
                     end
                     if getgenv().Area12 == true then
                         QuestRemotes.ActionQuest:InvokeServer("Area 12");
+                    end
+                    if getgenv().Area13 == true then
+                        QuestRemotes.ActionQuest:InvokeServer("Area 13");
                     end
                     --// Auto Forge Swords
                     if getgenv().SwordForge == true then
