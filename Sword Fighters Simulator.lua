@@ -3,7 +3,7 @@ if game.PlaceId == 11040063484 then
     local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jonatanortiz2/home/main/Roblox-Projects/Jons-Ui-Library/Source.lua"))();
     local Window = Library:CreateWindow("K", true);
     local AutofarmingTab = Window:CreateTab("Autofarming", true, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
-    local DungeonTab = Window:CreateTab("Dungeon", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
+    -- local DungeonTab = Window:CreateTab("Dungeon", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EquipTab = Window:CreateTab("Equip", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local EggsTab = Window:CreateTab("Eggs", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local ShopTab = Window:CreateTab("Shops", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
@@ -15,7 +15,7 @@ if game.PlaceId == 11040063484 then
     local SettingsTab = Window:CreateTab("Settings", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local UIToggleTab = Window:CreateTab("UI Toggle", false, "rbxassetid://4483362458", Vector2.new(0, 0), Vector2.new(0, 0));
     local Autofarming = AutofarmingTab:CreateSection("Autofarming");
-    local Dungeon = DungeonTab:CreateSection("Dungeon");
+    -- local Dungeon = DungeonTab:CreateSection("Dungeon");
     local Equip = EquipTab:CreateSection("Equip");
     local Eggs = EggsTab:CreateSection("Eggs");
     local Shop = ShopTab:CreateSection("Dungeon Shop");
@@ -55,7 +55,7 @@ if game.PlaceId == 11040063484 then
     local WeaponInv = PlayerGui.WeaponInv.Background.ImageFrame.Window.WeaponHolder.WeaponScrolling;
     local PetInv = PlayerGui.PetInv.Background.ImageFrame.Window.PetHolder.PetScrolling;
     local FloatingEggs = Workspace.Live.FloatingEggs;
-    --local Lobby = Workspace.Resources.Gamemodes.DungeonLobby;
+    -- local Lobby = Workspace.Resources.Gamemodes.DungeonLobby;
     local ChatFrame = PlayerGui.Chat.Frame.ChatChannelParentFrame;
     local Chat = ChatFrame["Frame_MessageLogDisplay"].Scroller;
     local Egg_Table = {
